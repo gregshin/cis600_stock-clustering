@@ -1,0 +1,39 @@
+---
+title: "CIS 600 Stock Clustering"
+author: "Gafei Szeto, Greg Shin, Ashraf Elnashar"
+date: "11/15/2019"
+output: pdf_document
+---
+
+```{r}
+
+```
+
+# load the data here
+
+# lets do an EDA
+
+# Clean this up
+
+# Show some pretty graphs about the initial/cleaned up data
+
+# Determine how this is clustered
+
+# Determine what parameters this is getting clustered through
+
+# Partitional Clustering?
+
+# Hiearchical Clustering?
+
+# K means Clustering?
+
+# Divisive Clustering? 
+
+# When do we tune?
+
+# How do we measure "above average" perfomance? Percentage gain? 
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
