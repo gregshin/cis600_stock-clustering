@@ -1,0 +1,34 @@
+## Data preprocessing
+
+```{r}
+  #find NA across all
+  missing = dataSetReader[, sapply(dataSetReader, anyNA), drop = FALSE]
+
+  cat("Missing data found in ",ncol(missing),"Columns, which is",
+    ncol(missing)/ncol(dataSetReader)*100, "% of features")
+```
+
+```{r}
+  #The missing columns and how many missing value it has
+  missingData <- sapply(dataSetReader,function(x) {sum(is.na(x))})
+  Position(function(x) x > 0, missingData)
+```
+
+```{r}
+  MissingNames <- names(dataSetReader[, sapply(dataSetReader, anyNA), drop = FALSE])
+
+  for (i in MissingNames){
+    dataSetReader[is.na(dataSetReader[,i]),i] <- median(dataSetReader[,i],na.rm = T)}
+
+#Find number of missing values/check ranges
+sum(is.na(dataSetReader))
+```
+
+### Check Duplicate Data Record
+```{r}
+  nrow(dataSetReader)
+  nrow(dataSetReader[!duplicated(dataSetReader),])
+```
+
+
+

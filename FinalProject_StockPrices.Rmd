@@ -1,0 +1,70 @@
+---
+title: "CIS 600 Final Project - Digit Recognition"
+author: Gafei, Greg Shin, Ashraf Elnashar
+date: Nov. 11th, 2019
+output: html_document
+theme: cerulean
+---
+
+## Introduction
+The ultimate goal in creating a stock portfolio is to gather a group of stocks that will increase in value overtime. However, it is often difficult to pick which stocks to invest in from all the ones that are available.Therefore, we intend to explore the use of clustering analysis in identifying groups of similarly performingstocks.
+
+## Goal
+To use clustering techniques with historical stock prices to group different stocks together, in orderto form an investment strategy.
+
+## Load Libraries
+  
+```{r setup}
+#Function that loads libraries
+EnsurePackage <- function(x) {
+  x <- as.character(x)
+  if (!require(x,character.only = T))
+    install.packages(x,repos = "https://cran.rstudio.com/")
+  require(x,character.only = T)
+}
+
+EnsurePackage("caret") # set of functions that attempt to streamline the process for creating predictive models
+EnsurePackage("rpart") #Recursive Partitioning And Regression Trees
+EnsurePackage("DMwR") #Smote
+EnsurePackage("rattle") #graphical user interface to many other R packages that provide functionality for data mining
+EnsurePackage("tidyverse") #Manipulating dataset
+EnsurePackage("ggplot2")
+EnsurePackage("readr")
+EnsurePackage("dplyr") #selecting data
+EnsurePackage("magrittr") #using pipe operators
+EnsurePackage("corrplot")
+EnsurePackage("knitr")
+EnsurePackage("dplyr") #selecting data
+EnsurePackage("sm")
+EnsurePackage("gmodels")
+EnsurePackage("rpart") #Recursive Partitioning and Regression Trees
+EnsurePackage("rpart.plot")
+EnsurePackage("plotly")
+EnsurePackage("e1071") #deals with Probability group theory functions
+EnsurePackage("RColorBrewer")  #coloring of graphs
+EnsurePackage("plotly")
+```
+
+## Load Data
+
+```{r, echo = TRUE}
+
+  path <- 'stock_prices_latest.csv'
+  dataSetReader <-read.csv(path)
+  
+  #summary of Stock Prices.
+  str(dataSetReader)
+
+  #Head.
+  head(dataSetReader)
+
+  #Tail.
+  tail(dataSetReader)
+```
+
+```{r, echo = FALSE}
+child_docs <- c("child/1_DataPreprocessing.Rmd","child/3_CreateTrainTestSet.Rmd")
+```
+
+```{r child = child_docs}
+```
