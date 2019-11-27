@@ -49,7 +49,7 @@ EnsurePackage("plotly")
 
 ```{r, echo = TRUE}
 
-  path <- 'stock_prices_latest.csv'
+  path <- 'stock_prices_latest_Simplified.csv'
   dataSetReader <-read.csv(path)
   
   #summary of Stock Prices.
