@@ -22,6 +22,4 @@ dim(train_data)
 dim(test_data)
 # The train dataset has 16936286 rows while the test dataset has 4234072 rows.
 # This function prop.table() combined with table() to verify if the randomization process is correct.
-prop.table(table(train_data$label))
-prop.table(table(test_data$label))
 ```
