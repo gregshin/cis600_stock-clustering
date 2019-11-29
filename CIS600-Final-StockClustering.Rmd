@@ -9,13 +9,25 @@ output: pdf_document
 
 ```
 
+library(pacman)
+
+
 # load the data here
 
-# lets do an EDA
+stockTradingData <- read.csv("")
+
+
+## lets do an EDA
+EDA should already be done here already
+
 
 # Clean this up
 
-# Show some pretty graphs about the initial/cleaned up data
+## Show some pretty graphs about the initial/cleaned up data
+
+Lets look to see wtf we have.
+
+str(stockTradingData)
 
 # Determine how this is clustered
 
@@ -25,7 +37,18 @@ output: pdf_document
 
 # Hiearchical Clustering?
 
-# K means Clustering?
+## K means Clustering? K is 4 here.
+
+Play with your k value here to modify the clustering analysis.
+This is our model for playing around with different type of data.
+
+fit <- kmeans(stockTradingData, centers = 4, iter.max = 10000)
+
+# Lets see what our output is
+
+fit$centers
+View(fit$centers)
+
 
 # Divisive Clustering? 
 
