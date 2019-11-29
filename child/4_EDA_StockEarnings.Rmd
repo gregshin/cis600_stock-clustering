@@ -1,0 +1,163 @@
+## Stock Earnings Data Exploration
+
+```{r}
+
+dataSetReader_EarningsFactor <- dataSetReader_Earnings %>% select_if(is.factor)
+
+# Exploration of all factor variables
+# absolute bar chart
+dataSetReader_EarningsFactor %>%gather("key","val",setdiff(names(.), "release_time")) %>% 
+  ggplot(aes(val,fill=release_time)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_bar(stat = 'count',position = "stack") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+```{r}
+# Exploration of all factor variables
+# Relative bar chart
+dataSetReader_EarningsFactor %>%gather("key","val",setdiff(names(.), "release_time")) %>% 
+  ggplot(aes(val,fill=release_time)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_bar(stat = 'count',position = "fill") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+```{r}
+# a graphical way of representing the Min, 1st Qu,  Median, Mean 3rd Qu, and  Max relationship between daily rate and educational field.
+theme_set(theme_bw())
+
+ggplot(dataSetReader_Earnings, aes(x = release_time, y = symbol)) +
+  geom_boxplot() +
+  theme(panel.grid.major.x = element_blank())
+
+```
+
+```{r}
+# The density plot is a basic tool in the data science toolkit.
+# density plots are usually a much more effective way to view the distribution of a variable. Create the plot using plot(density(x)) where x is a numeric vector.
+
+ggplot(dataSetReader_Earnings, aes(release_time)) +
+  geom_density(aes(fill=factor(symbol))) +
+    labs(title="Density plot",
+         subtitle="Symbols Grouped by release time",
+         caption="Source: dataSetReader_Earnings",
+         x="Release Time",
+         fill="# symbol")
+
+```
+
+```{r}
+# Categorical variable(release time) vs Categorical variable(symbol)
+
+
+# compare two categorical variable education field and attrition.
+# as we see in the graph the technical people and marketing are the most people that they leave the company.
+# this is an important attribute for prediction based on the p-value result (p=0.008471793 < 0.05).
+xtabs(~symbol+release_time,dataSetReader_Earnings)
+```
+
+```{r}
+# convert eps and eps_est to numeric 
+
+dataSetReader_Earnings$eps <- as.numeric(as.character(dataSetReader_Earnings$eps))
+dataSetReader_Earnings$eps_est <- as.numeric(as.character(dataSetReader_Earnings$eps_est))
+
+```
+
+```{r}
+# a graphical way of representing the relationship between total_prices and total_earnings field.
+theme_set(theme_bw())
+
+# ggplot(dataSetReader_Summary, aes(x = total_earnings, y = total_prices, group = 2)) +
+#   geom_boxplot() +
+#   theme(panel.grid.major.x = element_blank())
+
+dataSetReader_Earnings %>%
+  keep(is.numeric) %>% 
+  gather() %>% 
+  ggplot(aes(value)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_histogram()
+
+```
+
+```{r}
+
+d <- dataSetReader_Earnings
+d$vs <- factor(d$eps)
+d$am <- factor(d$eps_est)
+
+d %>% str()
+
+library(purrr)
+d %>% keep(is.numeric) %>% head()
+
+library(tidyr)
+d %>%
+  keep(is.numeric) %>% 
+  gather() %>%
+  head()
+
+library(ggplot2)
+d %>%
+  keep(is.numeric) %>%                     # Keep only numeric columns
+  gather() %>%                             # Convert to key-value pairs
+  ggplot(aes(value)) +                     # Plot the values
+    facet_wrap(~ key, scales = "free") +   # In separate panels
+    geom_density()                         # as density
+
+```
+
+```{r}
+plot(dataSetReader_Earnings$eps, dataSetReader_Earnings$eps_est, main="Scatterplot dataset summary",
+   xlab="eps ", ylab="eps_est ", pch=19)
+
+
+# Add fit lines
+abline(lm(dataSetReader_Earnings$eps_est~dataSetReader_Earnings$eps), col="red") # regression line (y~x)
+
+```
+
+```{r}
+
+# Scatterplot Matrices from the glus Package
+library(gclus)
+dta <- dataSetReader_Earnings[c(4,5)] # get data
+dta.r <- abs(cor(dta)) # get correlations
+dta.col <- dmat.color(dta.r) # get colors
+# reorder variables so those with highest correlation
+# are closest to the diagonal
+dta.o <- order.single(dta.r)
+cpairs(dta, dta.o, panel.colors=dta.col, gap=.5,
+main="Variables Ordered and Colored by Correlation" )
+
+```
+
+```{r}
+# 3D Scatterplot
+library(scatterplot3d)
+scatterplot3d(dataSetReader_Earnings$eps_est,dataSetReader_Earnings$symbol,dataSetReader_Earnings$eps, main="3D Scatterplot")
+```
+
+```{r}
+# 3D Scatterplot with Coloring and Vertical Drop Lines
+library(scatterplot3d)
+scatterplot3d(dataSetReader_Earnings$eps_est,dataSetReader_Earnings$symbol,dataSetReader_Earnings$eps, pch=16, highlight.3d=TRUE,
+  type="h", main="3D Scatterplot")
+```
+
+```{r}
+# Spinning 3d Scatterplot
+library(rgl)
+
+plot3d(dataSetReader_Earnings$eps_est,dataSetReader_Earnings$symbol,dataSetReader_Earnings$eps, col="red", size=3)
+
+```
+
+```{r}
+# Basic Scatterplot Matrix
+pairs(~dataSetReader_Earnings$date+dataSetReader_Earnings$qtr+dataSetReader_Earnings$release_time,data=dataSetReader_Earnings,
+   main="Sotck date and earning date Scatterplot Matrix")
+
+```

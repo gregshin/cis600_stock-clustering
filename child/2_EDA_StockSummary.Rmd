@@ -1,0 +1,104 @@
+## Stock Summary Data Exploration
+
+```{r}
+#Correlation between total_prices and total_earnings variables
+cor_matrix <- cor(dataSetReader_Summary[complete.cases(dataSetReader_Summary), sapply(dataSetReader_Summary, is.numeric)], method = "pearson")
+corrplot(cor_matrix, type = "upper")
+```
+
+```{r}
+# a graphical way of representing the relationship between total_prices and total_earnings field.
+theme_set(theme_bw())
+
+# ggplot(dataSetReader_Summary, aes(x = total_earnings, y = total_prices, group = 2)) +
+#   geom_boxplot() +
+#   theme(panel.grid.major.x = element_blank())
+
+dataSetReader_Summary %>%
+  keep(is.numeric) %>% 
+  gather() %>% 
+  ggplot(aes(value)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_histogram()
+```
+
+```{r}
+
+d <- dataSetReader_Summary
+d$vs <- factor(d$total_earnings)
+d$am <- factor(d$total_prices)
+
+d %>% str()
+
+library(purrr)
+d %>% keep(is.numeric) %>% head()
+
+library(tidyr)
+d %>%
+  keep(is.numeric) %>% 
+  gather() %>%
+  head()
+
+library(ggplot2)
+d %>%
+  keep(is.numeric) %>%                     # Keep only numeric columns
+  gather() %>%                             # Convert to key-value pairs
+  ggplot(aes(value)) +                     # Plot the values
+    facet_wrap(~ key, scales = "free") +   # In separate panels
+    geom_density()                         # as density
+
+```
+
+```{r}
+plot(total_earnings, total_prices, main="Scatterplot dataset summary",
+   xlab="Total Earnings ", ylab="Total Prices ", pch=19)
+
+
+# Add fit lines
+abline(lm(total_prices~total_earnings), col="red") # regression line (y~x)
+lines(lowess(total_earnings,total_prices), col="blue") # lowess line (x,y)
+
+```
+
+```{r}
+
+# Scatterplot Matrices from the glus Package
+library(gclus)
+dta <- dataSetReader_Summary[c(2,5)] # get data
+dta.r <- abs(cor(dta)) # get correlations
+dta.col <- dmat.color(dta.r) # get colors
+# reorder variables so those with highest correlation
+# are closest to the diagonal
+dta.o <- order.single(dta.r)
+cpairs(dta, dta.o, panel.colors=dta.col, gap=.5,
+main="Variables Ordered and Colored by Correlation" )
+
+```
+
+```{r}
+# 3D Scatterplot
+library(scatterplot3d)
+scatterplot3d(total_prices,symbol,total_earnings, main="3D Scatterplot")
+```
+
+```{r}
+# 3D Scatterplot with Coloring and Vertical Drop Lines
+library(scatterplot3d)
+scatterplot3d(total_prices,symbol,total_earnings, pch=16, highlight.3d=TRUE,
+  type="h", main="3D Scatterplot")
+```
+
+```{r}
+# Spinning 3d Scatterplot
+library(rgl)
+
+plot3d(total_prices,symbol,total_earnings, col="red", size=3)
+
+```
+
+```{r}
+# Basic Scatterplot Matrix
+pairs(~stock_from_date+stock_to_date+earnings_from_date+earnings_to_date,data=dataSetReader_Summary,
+   main="Sotck date and earning date Scatterplot Matrix")
+
+```

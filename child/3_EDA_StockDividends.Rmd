@@ -1,0 +1,71 @@
+## Stock Dividends Data Exploration
+
+```{r}
+ggplot(dataSetReader_Dividends, aes(x = symbol, y = dividend)) +
+  geom_boxplot() +
+  theme(panel.grid.major.x = element_blank())
+
+dataSetReader_Dividends %>%
+  keep(is.numeric) %>% 
+  gather() %>% 
+  ggplot(aes(value)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_histogram()
+```
+
+```{r}
+d <- dataSetReader_Dividends
+d$vs <- factor(d$symbol)
+d$am <- factor(d$dividend)
+
+d %>% str()
+
+library(purrr)
+d %>% keep(is.numeric) %>% head()
+
+library(tidyr)
+d %>%
+  keep(is.numeric) %>% 
+  gather() %>%
+  head()
+
+library(ggplot2)
+d %>%
+  keep(is.numeric) %>%                     # Keep only numeric columns
+  gather() %>%                             # Convert to key-value pairs
+  ggplot(aes(value)) +                     # Plot the values
+    facet_wrap(~ key, scales = "free") +   # In separate panels
+    geom_density()                         # as density
+
+```
+
+```{r}
+plot(dataSetReader_Dividends$symbol, dataSetReader_Dividends$dividend, main="Scatterplot dataset divid end",
+   xlab="symbol ", ylab="dividend ", pch=19)
+
+# Add fit lines
+abline(lm(dataSetReader_Dividends$dividend~dataSetReader_Dividends$symbol), col="red") # regression line (y~x)
+lines(lowess(dataSetReader_Dividends$symbol,dataSetReader_Dividends$dividend), col="blue") # lowess line (x,y)
+
+```
+
+```{r}
+# 3D Scatterplot
+library(scatterplot3d)
+scatterplot3d(dataSetReader_Dividends$date,dataSetReader_Dividends$symbol,dataSetReader_Dividends$dividend, main="3D Scatterplot")
+```
+
+```{r}
+# 3D Scatterplot with Coloring and Vertical Drop Lines
+library(scatterplot3d)
+scatterplot3d(dataSetReader_Dividends$date,dataSetReader_Dividends$symbol,dataSetReader_Dividends$dividend, pch=16, highlight.3d=TRUE,
+  type="h", main="3D Scatterplot")
+```
+
+```{r}
+# Spinning 3d Scatterplot
+library(rgl)
+
+plot3d(dataSetReader_Dividends$date,dataSetReader_Dividends$symbol,dataSetReader_Dividends$dividend, col="red", size=3)
+
+```

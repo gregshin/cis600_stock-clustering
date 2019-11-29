@@ -1,0 +1,75 @@
+## Stock Prices Data Exploration
+
+```{r}
+dataSetReader_PricesFactor <- dataSetReader_Prices %>% select_if(is.factor)
+
+# Exploration of all factor variables
+# absolute bar chart
+dataSetReader_PricesFactor %>%gather("key","val",setdiff(names(.), "release_time")) %>% 
+  ggplot(aes(val,fill=dataSetReader_PricesFactor$close_adjusted)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_bar(stat = 'count',position = "stack") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+
+```{r}
+#Correlation between total_prices and total_earnings variables
+cor_matrix <- cor(dataSetReader_Prices[complete.cases(dataSetReader_Prices), sapply(dataSetReader_Prices, is.numeric)], method = "pearson")
+corrplot(cor_matrix, type = "upper")
+```
+
+```{r}
+# a graphical way of representing the relationship between total_prices and total_earnings field.
+theme_set(theme_bw())
+
+dataSetReader_Prices %>%
+  keep(is.numeric) %>% 
+  gather() %>% 
+  ggplot(aes(value)) +
+    facet_wrap(~ key, scales = "free") +
+    geom_histogram()
+```
+
+```{r}
+
+d <- dataSetReader_Prices
+d$vs <- factor(d$close)
+d$am <- factor(d$open)
+
+d %>% str()
+
+library(purrr)
+d %>% keep(is.numeric) %>% head()
+
+library(tidyr)
+d %>%
+  keep(is.numeric) %>% 
+  gather() %>%
+  head()
+
+library(ggplot2)
+d %>%
+  keep(is.numeric) %>%                     # Keep only numeric columns
+  gather() %>%                             # Convert to key-value pairs
+  ggplot(aes(value)) +                     # Plot the values
+    facet_wrap(~ key, scales = "free") +   # In separate panels
+    geom_density()                         # as density
+
+```
+
+```{r}
+
+# Scatterplot Matrices from the glus Package
+library(gclus)
+dta <- dataSetReader_Prices[c(3,6,4,5)] # get data
+dta.r <- abs(cor(dta)) # get correlations
+dta.col <- dmat.color(dta.r) # get colors
+# reorder variables so those with highest correlation
+# are closest to the diagonal
+dta.o <- order.single(dta.r)
+cpairs(dta, dta.o, panel.colors=dta.col, gap=.5,
+main="Variables Ordered and Colored by Correlation" )
+
+```
+
