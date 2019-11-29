@@ -49,21 +49,43 @@ EnsurePackage("plotly")
 
 ```{r, echo = TRUE}
 
+  nRowsRead = 1000 # specify 'None' if want to read whole file
+  # dataset_summary.csv has 7091 rows in reality, but we are only loading/previewing the first 1000 rows
+
+  path <- 'dataset_summary.csv'
+  dataSetReader_Summary <-read.csv(path, nrows = nRowsRead)
+  #Summary of Stock Prices.
+  str(dataSetReader_Summary)
+  #Head of Summary of Stock.
+  head(dataSetReader_Summary, 5)
+
+  #Divid ends of Stock Prices.
+  path <- 'dividends_latest.csv'
+  dataSetReader_Dividends <-read.csv(path, nrows = nRowsRead)
+  #Dividends of Stock Prices.
+  str(dataSetReader_Dividends)
+  #Head of Divid ends of Stock.
+  head(dataSetReader_Dividends, 5)
+
+  #Earnings of Stock Prices.
+  path <- 'earnings_latest.csv'
+  dataSetReader_Earnings <-read.csv(path, nrows = nRowsRead)
+  #Dividends of Stock Prices.
+  str(dataSetReader_Earnings)
+  #Head of Earnings of Stock.
+  head(dataSetReader_Earnings, 5)
+
+  #Stock Prices.
   path <- 'stock_prices_latest_Simplified.csv'
-  dataSetReader <-read.csv(path)
-  
-  #summary of Stock Prices.
-  str(dataSetReader)
-
-  #Head.
-  head(dataSetReader)
-
-  #Tail.
-  tail(dataSetReader)
+  dataSetReader_Prices <-read.csv(path, nrows = nRowsRead)
+  #Stock Prices.
+  str(dataSetReader_Prices)
+  #Head of Stock Prices.
+  head(dataSetReader_Prices, 5)
 ```
 
 ```{r, echo = FALSE}
-child_docs <- c("child/1_DataPreprocessing.Rmd","child/3_CreateTrainTestSet.Rmd")
+child_docs <- c("child/1_DataPreprocessing.Rmd","child/2_EDA_StockSummary.Rmd","child/3_EDA_StockDividends.Rmd","child/4_EDA_StockEarnings.Rmd","child/5_EDA_StockPrices.Rmd")
 ```
 
 ```{r child = child_docs}

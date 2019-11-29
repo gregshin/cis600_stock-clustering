@@ -1,34 +1,125 @@
 ## Data preprocessing
 
+### stock dataset summary
 ```{r}
   #find NA across all
-  missing = dataSetReader[, sapply(dataSetReader, anyNA), drop = FALSE]
+  missing = dataSetReader_Summary[, sapply(dataSetReader_Summary, anyNA), drop = FALSE]
 
   cat("Missing data found in ",ncol(missing),"Columns, which is",
-    ncol(missing)/ncol(dataSetReader)*100, "% of features")
+    ncol(missing)/ncol(dataSetReader_Summary)*100, "% of features")
 ```
 
 ```{r}
   #The missing columns and how many missing value it has
-  missingData <- sapply(dataSetReader,function(x) {sum(is.na(x))})
+  missingData <- sapply(dataSetReader_Summary,function(x) {sum(is.na(x))})
   Position(function(x) x > 0, missingData)
 ```
 
 ```{r}
-  MissingNames <- names(dataSetReader[, sapply(dataSetReader, anyNA), drop = FALSE])
+  MissingNames <- names(dataSetReader_Summary[, sapply(dataSetReader_Summary, anyNA), drop = FALSE])
 
   for (i in MissingNames){
-    dataSetReader[is.na(dataSetReader[,i]),i] <- median(dataSetReader[,i],na.rm = T)}
+    dataSetReader_Summary[is.na(dataSetReader_Summary[,i]),i] <- median(dataSetReader_Summary[,i],na.rm = T)}
 
 #Find number of missing values/check ranges
-sum(is.na(dataSetReader))
+sum(is.na(dataSetReader_Summary))
 ```
 
-### Check Duplicate Data Record
 ```{r}
-  nrow(dataSetReader)
-  nrow(dataSetReader[!duplicated(dataSetReader),])
+  # Check Duplicate Data Record  
+  nrow(dataSetReader_Summary)
+  nrow(dataSetReader_Summary[!duplicated(dataSetReader_Summary),])
 ```
 
+### stock dataset Divid ends
+```{r}
+  #find NA across all
+  missing = dataSetReader_Dividends[, sapply(dataSetReader_Dividends, anyNA), drop = FALSE]
 
+  cat("Missing data found in ",ncol(missing),"Columns, which is",
+    ncol(missing)/ncol(dataSetReader_Dividends)*100, "% of features")
+```
 
+```{r}
+  #The missing columns and how many missing value it has
+  missingData <- sapply(dataSetReader_Dividends,function(x) {sum(is.na(x))})
+  Position(function(x) x > 0, missingData)
+```
+
+```{r}
+  MissingNames <- names(dataSetReader_Dividends[, sapply(dataSetReader_Dividends, anyNA), drop = FALSE])
+
+  for (i in MissingNames){
+    dataSetReader_Dividends[is.na(dataSetReader_Dividends[,i]),i] <- median(dataSetReader_Dividends[,i],na.rm = T)}
+
+#Find number of missing values/check ranges
+sum(is.na(dataSetReader_Dividends))
+```
+
+```{r}
+  # Check Duplicate Data Record
+  nrow(dataSetReader_Dividends)
+  nrow(dataSetReader_Dividends[!duplicated(dataSetReader_Dividends),])
+```
+
+### stock dataset Earnings
+```{r}
+  #find NA across all
+  missing = dataSetReader_Earnings[, sapply(dataSetReader_Earnings, anyNA), drop = FALSE]
+
+  cat("Missing data found in ",ncol(missing),"Columns, which is",
+    ncol(missing)/ncol(dataSetReader_Earnings)*100, "% of features")
+```
+
+```{r}
+  #The missing columns and how many missing value it has
+  missingData <- sapply(dataSetReader_Earnings,function(x) {sum(is.na(x))})
+  Position(function(x) x > 0, missingData)
+```
+
+```{r}
+  MissingNames <- names(dataSetReader_Earnings[, sapply(dataSetReader_Earnings, anyNA), drop = FALSE])
+
+  for (i in MissingNames){
+    dataSetReader_Earnings[is.na(dataSetReader_Earnings[,i]),i] <- median(dataSetReader_Earnings[,i],na.rm = T)}
+
+#Find number of missing values/check ranges
+sum(is.na(dataSetReader_Earnings))
+```
+
+```{r}
+  # Check Duplicate Data Record
+  nrow(dataSetReader_Earnings)
+  nrow(dataSetReader_Earnings[!duplicated(dataSetReader_Earnings),])
+```
+
+### stock dataset Stock Prices.
+```{r}
+  #find NA across all
+  missing = dataSetReader_Prices[, sapply(dataSetReader_Prices, anyNA), drop = FALSE]
+
+  cat("Missing data found in ",ncol(missing),"Columns, which is",
+    ncol(missing)/ncol(dataSetReader_Prices)*100, "% of features")
+```
+
+```{r}
+  #The missing columns and how many missing value it has
+  missingData <- sapply(dataSetReader_Prices,function(x) {sum(is.na(x))})
+  Position(function(x) x > 0, missingData)
+```
+
+```{r}
+  MissingNames <- names(dataSetReader_Prices[, sapply(dataSetReader_Prices, anyNA), drop = FALSE])
+
+  for (i in MissingNames){
+    dataSetReader_Prices[is.na(dataSetReader_Prices[,i]),i] <- median(dataSetReader_Prices[,i],na.rm = T)}
+
+#Find number of missing values/check ranges
+sum(is.na(dataSetReader_Prices))
+```
+
+```{r}
+  # Check Duplicate Data Record
+  nrow(dataSetReader_Prices)
+  nrow(dataSetReader_Prices[!duplicated(dataSetReader_Prices),])
+```
