@@ -50,13 +50,13 @@ d %>%
 ```
 
 ```{r}
-plot(total_earnings, total_prices, main="Scatterplot dataset summary",
+plot(dataSetReader_Summary$total_earnings, dataSetReader_Summary$total_prices, main="Scatterplot dataset summary",
    xlab="Total Earnings ", ylab="Total Prices ", pch=19)
 
 
 # Add fit lines
-abline(lm(total_prices~total_earnings), col="red") # regression line (y~x)
-lines(lowess(total_earnings,total_prices), col="blue") # lowess line (x,y)
+abline(lm(dataSetReader_Summary$total_prices~dataSetReader_Summary$total_earnings), col="red") # regression line (y~x)
+lines(lowess(dataSetReader_Summary$total_earnings,dataSetReader_Summary$total_prices), col="blue") # lowess line (x,y)
 
 ```
 
@@ -78,13 +78,13 @@ main="Variables Ordered and Colored by Correlation" )
 ```{r}
 # 3D Scatterplot
 library(scatterplot3d)
-scatterplot3d(total_prices,symbol,total_earnings, main="3D Scatterplot")
+scatterplot3d(dataSetReader_Summary$total_prices,dataSetReader_Summary$symbol,dataSetReader_Summary$total_earnings, main="3D Scatterplot")
 ```
 
 ```{r}
 # 3D Scatterplot with Coloring and Vertical Drop Lines
 library(scatterplot3d)
-scatterplot3d(total_prices,symbol,total_earnings, pch=16, highlight.3d=TRUE,
+scatterplot3d(dataSetReader_Summary$total_prices,dataSetReader_Summary$symbol,dataSetReader_Summary$total_earnings, pch=16, highlight.3d=TRUE,
   type="h", main="3D Scatterplot")
 ```
 
@@ -92,7 +92,7 @@ scatterplot3d(total_prices,symbol,total_earnings, pch=16, highlight.3d=TRUE,
 # Spinning 3d Scatterplot
 library(rgl)
 
-plot3d(total_prices,symbol,total_earnings, col="red", size=3)
+plot3d(dataSetReader_Summary$total_prices,dataSetReader_Summary$symbol,dataSetReader_Summary$total_earnings, col="red", size=3)
 
 ```
 
