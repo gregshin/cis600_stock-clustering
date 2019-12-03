@@ -1,0 +1,40 @@
+## Attempt our own cleaning up of data here.
+
+# Load the raw stock trading data
+stockTradingDataKmeans <- read.csv("/Users/gafei/Documents/school/CIS600/final/raw_data/us-historical-stock-prices-with-earnings-data/stocks-latest/stock_prices_latest.csv")
+
+# lets look at the data briefly
+str(stockTradingDataKmeans)
+
+# remove the split coefficient column
+stockTradingDataKmeans <-stockTradingDataKmeans[, -c(9)]
+
+# change the date column to be in "date" format
+stockTradingDataKmeans$date <- as.Date(stockTradingDataKmeans$date)
+
+# lets filter by stocks in 2017. 2017 seems to have more data
+stockTradingDataKmeans2017 <- stockTradingDataKmeans[stockTradingDataKmeans$date >= "2018-01-01" & stockTradingDataKmeans$date <= "2018-12-31",]
+
+
+## Lets calcuate annual returns here? How should we select stocks for annual returns?
+
+
+
+
+## Calculate returns based on earnings data? Generally, there's higher volatility during "earnings" season. Q1, Q2, Q3, Q4?
+
+# remove the stock symbol and date column prior to kmeans
+stockTradingDataKmeans2017nosymbol_date <-stockTradingDataKmeans2017[, -c(1:2)]
+
+
+## K means Clustering? K is 4 here.
+
+Play with your k value here to modify the clustering analysis.
+This is our model for playing around with different type of data.
+
+
+
+kmeansStocks2017 <- kmeans(stockTradingDataKmeans2017nosymbol_date, centers = 4, iter.max = 10000)
+
+# Lets see what our output is
+fviz_cluster(kmeansStocks2017, data = stockTradingDataKmeans2017nosymbol_date)
