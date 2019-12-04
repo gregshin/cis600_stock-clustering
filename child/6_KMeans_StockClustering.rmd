@@ -1,7 +1,7 @@
 ## Attempt our own cleaning up of data here.
 
 # Load the raw stock trading data
-stockTradingDataKmeans <- read.csv("/Users/gafei/Documents/school/CIS600/final/raw_data/us-historical-stock-prices-with-earnings-data/stocks-latest/stock_prices_latest.csv")
+stockTradingDataKmeans <- read.csv("/Users/gafei/Documents/school/CIS600/final/raw_data/us-historical-stock-prices-with-earnings-data/stocks_latest/stock_prices_latest.csv")
 
 # lets look at the data briefly
 str(stockTradingDataKmeans)
@@ -9,11 +9,55 @@ str(stockTradingDataKmeans)
 # remove the split coefficient column
 stockTradingDataKmeans <-stockTradingDataKmeans[, -c(9)]
 
+
+
 # change the date column to be in "date" format
 stockTradingDataKmeans$date <- as.Date(stockTradingDataKmeans$date)
 
 # lets filter by stocks in 2017. 2017 seems to have more data
 stockTradingDataKmeans2017 <- stockTradingDataKmeans[stockTradingDataKmeans$date >= "2018-01-01" & stockTradingDataKmeans$date <= "2018-12-31",]
+
+
+#factor the 7091 stocks into numbers
+stockTradingDataKmeans2017$symbol <- factor(stockTradingDataKmeans2017$symbol)
+
+# remove any rows that have 0 volume, that means there weren't any price changes
+test <- filter(stockTradingDataKmeans2017, volume != 0)
+
+
+#standardize the continuous numbers, and only the columns that have numbers that we care about
+stockTradingDataKmeans2017Scaled <- scale(test[c('open','high', 'low', 'close', 'close_adjusted', 'volume')])
+
+
+#elbow method to figure out how many k's
+#fviz_nbclust(stockTradingDataKmeans2017Scaled, kmeans, method = "wss", k.max = 8)
+
+
+## K means Clustering? K is 4 here.
+
+Play with your k value here to modify the clustering analysis.
+This is our model for playing around with different type of data.
+
+kmeansStocks2017 <- kmeans(stockTradingDataKmeans2017Scaled, centers = 4, iter.max = 10000)
+
+#lets look at centers
+kmeansStocks2017$centers
+
+
+# Lets see what our output is
+fviz_cluster(kmeansStocks2017, data = stockTradingDataKmeans2017Scaled)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Lets calcuate annual returns here? How should we select stocks for annual returns?
