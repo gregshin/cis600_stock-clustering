@@ -76,6 +76,19 @@ kmeansStocks2018 <-kmeans(testna1, centers = 4, iter.max = 10000)
 fviz_cluster(kmeansStocks2018, data = testna1)
 ```
 
+```{r, echo = FALSE}
+#k means analysis, with center of 8
+kmeansStocks2018_8 <-kmeans(testna1, centers = 8, iter.max = 10000)
+```
+
+```{r}
+# shows an aggregate of stock movement, based on trading day
+fviz_cluster(kmeansStocks2018_8, data = testna1)
+```
+
+
+
+
 ## Lets calcuate annual returns here? How should we select stocks for annual returns?
 
 
