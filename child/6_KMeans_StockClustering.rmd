@@ -66,6 +66,11 @@ reshapeStocks2daterowscaled <- scale(reshapeStocks2daterow[c(1:5186)])
 testna1 <- t(na.omit(t(reshapeStocks2daterowscaled )))
 ```
 
+```{r}
+# lets figure out the optimal amount of clusters for dataset
+fviz_nbclust(testna1, kmeans, method = "wss", k.max = 8)
+```
+
 ```{r, echo = FALSE}
 #k means analysis, but omit anything that is na
 kmeansStocks2018 <-kmeans(testna1, centers = 4, iter.max = 10000)
