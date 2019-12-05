@@ -45,6 +45,9 @@ EnsurePackage("RColorBrewer")  #coloring of graphs
 EnsurePackage("plotly")
 EnsurePackage("pacman")
 EnsurePackage("factoextra")
+EnsurePackage("reshape2")
+EnsurePackage("tidyr")
+EnsurePackage("textshape")
 ```
 
 ## Load Data
