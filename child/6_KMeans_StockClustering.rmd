@@ -98,6 +98,7 @@ kmeansStocks2018_s4 <-kmeans(testna1, centers = 4, iter.max = 10000)
 fviz_cluster(kmeansStocks2018_s4, data = testna1)
 ```
 
+
 #results say, remove brk.a, bkng, nvr, seb since it skews data
 testna1_mod<-testna1[-c(687, 614, 3381, 4148), ]
 
@@ -138,30 +139,41 @@ fviz_cluster(kmeansStocks2018_8, data = testna2)
 
 
 ## Lets calcuate annual returns here? How should we select stocks for annual returns?
-
+```{r, echo = FALSE}
 # Remove all rows with any 0's in them
 reshapeStockssymbolrowNONA <-reshapeStockssymbolrow[complete.cases(reshapeStockssymbolrow),]
+```
 
+```{r, echo = FALSE}
 #remove the outlier stocks
 reshapeStockssymbolrowNONA<-reshapeStockssymbolrowNONA[-c(687, 614, 3381, 4148), ]
+```
 
+```{r, echo = FALSE}
 # calculate annual returns for each specific stock for 2018
 annual_returns<-((reshapeStockssymbolrowNONA$`2018-12-31` - reshapeStockssymbolrowNONA$`2018-01-02`)/(reshapeStockssymbolrowNONA$`2018-01-02`))
+```
 
+```{r, echo = FALSE}
 # scale the annual returns?
 annual_returns_scaled <- scale(annual_returns)
+```
 
+```{r}
 # lets figure out the optimal amount of clusters for annual returns
 fviz_nbclust(annual_returns_scaled, kmeans, method = "wss", k.max = 8)
+```
 
 #graph says 5 clusters should be fine.
-
+```{r}
 #k means analysis by annaul returns, but omit anything that is na, with center of 5
 kmeansannualreturns <-kmeans(annual_returns_scaled, centers = 5, iter.max = 10000)
+```
 
+```{r}
 # shows an aggregate of stock based on annual returns, 
 fviz_cluster(kmeansannualreturns, data = reshapeStockssymbolrowNONA)
-
+```
 
 
 ## Calculate returns based on earnings data? Generally, there's higher volatility during "earnings" season. Q1, Q2, Q3, Q4?
