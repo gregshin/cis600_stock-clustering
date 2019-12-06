@@ -42,8 +42,13 @@ testCloseAdj <- test[, -c(3:6,8)]
 ```
 
 ```{r, echo = FALSE}
-# reshapes stocks to have stock symbol, then date1, then date 2, etc...
+# reshapes stocks to have stock symbol, then date1, then date 2, etc...and ONLY close_adjusted price
 reshapeStocks <-dcast(testCloseAdj, symbol ~ date, value.var = "close_adjusted" )
+```
+
+```{r, echo = FALSE}
+#move stock symbol column to rows
+reshapeStockssymbolrow <-column_to_rownames(reshapeStocks, loc=1)
 ```
 
 ```{r, echo = FALSE}
@@ -57,38 +62,76 @@ reshapeStocks2daterow <-column_to_rownames(reshapeStocks2, loc=1)
 ```
 
 ```{r, echo = FALSE}
-#kmeans preprocessing, scale the data
+#kmeans preprocessing, scale the data for symbols
+reshapeStockssymbolrowScaled <- scale(reshapeStockssymbolrow[c(1:251)])
+```
+
+
+```{r, echo = FALSE}
+#kmeans preprocessing, scale the data for date
 reshapeStocks2daterowscaled <- scale(reshapeStocks2daterow[c(1:5186)])
 ```
 
 ```{r, echo = FALSE}
-# kmeans preprocessing, remove all columns that have at least one NA
-testna1 <- t(na.omit(t(reshapeStocks2daterowscaled )))
+# kmeans preprocessing for stocks symbols, remove all ROWS that have at least one NA
+#testna1 <- t(na.omit(t(reshapeStockssymbolrowScaled )))
+testna1 <- reshapeStockssymbolrowScaled[complete.cases(reshapeStockssymbolrowScaled),]
+```
+
+```{r, echo = FALSE}
+# kmeans preprocessing for date, remove all columns that have at least one NA
+testna2 <- t(na.omit(t(reshapeStocks2daterowscaled )))
 ```
 
 ```{r}
-# lets figure out the optimal amount of clusters for dataset
+# lets figure out the optimal amount of clusters for testna1 (symbols)
 fviz_nbclust(testna1, kmeans, method = "wss", k.max = 8)
 ```
 
 ```{r, echo = FALSE}
-#k means analysis, but omit anything that is na
-kmeansStocks2018 <-kmeans(testna1, centers = 4, iter.max = 10000)
+#k means analysis by symbol, but omit anything that is na, with center of 4
+kmeansStocks2018_s4 <-kmeans(testna1, centers = 4, iter.max = 10000)
 ```
 
 ```{r}
-# shows an aggregate of stock movement, based on trading day
-fviz_cluster(kmeansStocks2018, data = testna1)
+# shows an aggregate of stock movement, based on stock symbol for center of 4
+fviz_cluster(kmeansStocks2018_s4, data = testna1)
+```
+
+#results say, remove brk.a, bkng, nvr, seb since it skews data
+testna1_mod<-testna1[-c(687, 614, 3381, 4148), ]
+
+#rerun with testna1 modified
+
+testna1_mod<-testna1[-c(687, 614, 3381, 4148), ]
+fviz_nbclust(testna1_mod, kmeans, method = "wss", k.max = 8)
+kmeansStocks2018_s4 <-kmeans(testna1_mod, centers = 4, iter.max = 10000)
+fviz_cluster(kmeansStocks2018_s4, data = testna1_mod)
+
+
+```{r}
+# lets figure out the optimal amount of clusters for testna2 (date)
+fviz_nbclust(testna2, kmeans, method = "wss", k.max = 8)
 ```
 
 ```{r, echo = FALSE}
-#k means analysis, with center of 8
-kmeansStocks2018_8 <-kmeans(testna1, centers = 8, iter.max = 10000)
+#k means analysis by date, but omit anything that is na, with center of 4
+kmeansStocks2018_4 <-kmeans(testna2, centers = 4, iter.max = 10000)
 ```
 
 ```{r}
-# shows an aggregate of stock movement, based on trading day
-fviz_cluster(kmeansStocks2018_8, data = testna1)
+# shows an aggregate of stock movement, based on trading day for center of 4
+fviz_cluster(kmeansStocks2018_4, data = testna2)
+```
+
+```{r, echo = FALSE}
+#k means analysis by date, but omit anything that is na, with center of 8
+kmeansStocks2018_8 <-kmeans(testna2, centers = 8, iter.max = 10000)
+```
+
+```{r}
+# shows an aggregate of stock movement, based on trading day for center of 8
+fviz_cluster(kmeansStocks2018_8, data = testna2)
 ```
 
 
@@ -96,6 +139,28 @@ fviz_cluster(kmeansStocks2018_8, data = testna1)
 
 ## Lets calcuate annual returns here? How should we select stocks for annual returns?
 
+# Remove all rows with any 0's in them
+reshapeStockssymbolrowNONA <-reshapeStockssymbolrow[complete.cases(reshapeStockssymbolrow),]
+
+#remove the outlier stocks
+reshapeStockssymbolrowNONA<-reshapeStockssymbolrowNONA[-c(687, 614, 3381, 4148), ]
+
+# calculate annual returns for each specific stock for 2018
+annual_returns<-((reshapeStockssymbolrowNONA$`2018-12-31` - reshapeStockssymbolrowNONA$`2018-01-02`)/(reshapeStockssymbolrowNONA$`2018-01-02`))
+
+# scale the annual returns?
+annual_returns_scaled <- scale(annual_returns)
+
+# lets figure out the optimal amount of clusters for annual returns
+fviz_nbclust(annual_returns_scaled, kmeans, method = "wss", k.max = 8)
+
+#graph says 5 clusters should be fine.
+
+#k means analysis by annaul returns, but omit anything that is na, with center of 5
+kmeansannualreturns <-kmeans(annual_returns_scaled, centers = 5, iter.max = 10000)
+
+# shows an aggregate of stock based on annual returns, 
+fviz_cluster(kmeansannualreturns, data = reshapeStockssymbolrowNONA)
 
 
 
