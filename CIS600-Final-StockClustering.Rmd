@@ -18,7 +18,9 @@ stockTradingData <- read.csv("")
 
 
 ## lets do an EDA
-EDA should already be done here already
+EDA should already be done here already.
+Make sure most/all outliers are removed. K-means clustering is affected by outliers. 
+
 
 
 # Clean this up
