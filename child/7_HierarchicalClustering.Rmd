@@ -1,14 +1,3 @@
-```{r setup, include=FALSE}
-
-library(tidyverse)  # data manipulation
-library(cluster)    # clustering algorithms
-library(factoextra) # clustering visualization
-library(dendextend) # for comparing two dendrograms
-library(textshape)
-library(stats)
-
-```
-
 ## Data Preprocessing
 To prepare the data for cluster analysis, the Earnings data was first restricted to all earnings within the year 2018. From there, the difference between the reported Earnings per Share and the Estimated Earnings per Share was calculated. Outliers were removed, and the data was then scaled and centered.
 
