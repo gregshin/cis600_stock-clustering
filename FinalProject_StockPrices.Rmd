@@ -34,7 +34,6 @@ EnsurePackage("dplyr") #selecting data
 EnsurePackage("magrittr") #using pipe operators
 EnsurePackage("corrplot")
 EnsurePackage("knitr")
-EnsurePackage("dplyr") #selecting data
 EnsurePackage("sm")
 EnsurePackage("gmodels")
 EnsurePackage("rpart") #Recursive Partitioning and Regression Trees
@@ -43,6 +42,9 @@ EnsurePackage("plotly")
 EnsurePackage("e1071") #deals with Probability group theory functions
 EnsurePackage("RColorBrewer")  #coloring of graphs
 EnsurePackage("plotly")
+EnsurePackage("cluster")    # clustering algorithms
+EnsurePackage("dendextend") # for comparing two dendrograms
+EnsurePackage("stats")
 EnsurePackage("pacman")
 EnsurePackage("factoextra")
 EnsurePackage("reshape2")
@@ -90,9 +92,7 @@ EnsurePackage("textshape")
 ```
 
 ```{r, echo = FALSE}
-
-child_docs <- c("child/1_DataPreprocessing.Rmd","child/2_EDA_StockSummary.Rmd","child/3_EDA_StockDividends.Rmd","child/4_EDA_StockEarnings.Rmd","child/5_EDA_StockPrices.Rmd", "child/6_KMeans_StockClustering")
-
+child_docs <- c("child/1_DataPreprocessing.Rmd","child/2_EDA_StockSummary.Rmd","child/3_EDA_StockDividends.Rmd","child/4_EDA_StockEarnings.Rmd","child/5_EDA_StockPrices.Rmd","child/6_KMeans_StockClustering","child/7_HierarchicalClustering.Rmd")
 ```
 
 ```{r child = child_docs}

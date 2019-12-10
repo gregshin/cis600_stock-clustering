@@ -1,0 +1,107 @@
+## Data Preprocessing
+To prepare the data for cluster analysis, the Earnings data was first restricted to all earnings within the year 2018. From there, the difference between the reported Earnings per Share and the Estimated Earnings per Share was calculated. Outliers were removed, and the data was then scaled and centered.
+
+
+```{r preprocessing}
+
+#import data
+initial <- read_csv("../earnings_latest.csv")
+head(initial)
+
+#restrict data to 2018
+stocks2018 <- initial[initial$date >= "2018-01-01" & initial$date <= "2018-12-31",]
+
+#replace NULL values with NA
+stocks2018$eps_est <- gsub("NULL", NA, stocks2018$eps_est)
+
+#drop unnecessary columns
+stocks2018$release_time <- NULL
+stocks2018$qtr <- NULL
+stocks2018$date <- NULL
+
+#drop all incomplete cases
+stocks2018 <- stocks2018[complete.cases(stocks2018),]
+
+#cast numeric data as.numeric
+stocks2018$eps <- as.numeric(stocks2018$eps)
+stocks2018$eps_est <- as.numeric(stocks2018$eps_est)
+
+#create column to represent difference between estimate and actual earnings per share
+stocks2018$diff <- stocks2018$eps - stocks2018$eps_est
+
+str(stocks2018)
+
+#remove outliers
+mean_outlier <- boxplot(stocks2018$diff)$out
+stocks2018_mean_noOutlier <- stocks2018[-which(stocks2018$diff %in% mean_outlier),]
+
+#get mean of all data by symbol
+stocks2018_mean_noOutlier <- stocks2018_mean_noOutlier %>% group_by(symbol) %>% summarise_all(mean)
+
+#change row names to be stock symbols
+stocks2018_mean_noOutlier <- column_to_rownames(stocks2018_mean_noOutlier, loc=1)
+
+#scale and center all data
+cluster_ready_outlier <- scale(stocks2018_mean_noOutlier)
+
+```
+
+## Hierarchical Clustering: Divisive Method
+
+```{r divisive}
+
+divMeanOutlier <- diana(cluster_ready_outlier)
+
+#display dendrogram of DIANA algorithm
+pltree(divMeanOutlier, cex = 0.1, hang = -1, main = "Dendrogram of diana") 
+
+```
+
+## Hierarchical Clustering: Agglomerative Method
+To determine the ideal agglomerative clustering method, models were created using all four different types of distance algorithms: complete, single, average, and Ward's. Ward's distance was found to have the largest agglomerative coefficient (0.999), which indicated a strong tendency towards clustering. 
+
+```{r agglomerative}
+
+#run agglomerative clustering with four different measures of distance: complete, single, average, ward
+agglComplete <- agnes(cluster_ready_outlier, method="complete")
+agglSingle <- agnes(cluster_ready_outlier, method="single")
+agglAverage <- agnes(cluster_ready_outlier, method="average")
+agglWard <- agnes(cluster_ready_outlier, method="ward")
+
+#display agglomerative coefficient
+agglComplete$ac
+agglSingle$ac
+agglAverage$ac
+agglWard$ac
+
+#display dendrogram of clustering using Ward distance
+pltree(agglWard, cex = 0.1, hang = -1, main = "Dendrogram of agnes") 
+
+```
+
+## Optimal Clustering
+
+An elbow diagram was created to determine that the optimal number of clusters was three.
+
+```{r optimal clustering}
+
+#create elbow diagram
+fviz_nbclust(cluster_ready_outlier, FUN = hcut, method = "wss")
+
+#create k=3 clusters
+sub_grp_diana <- cutree(as.hclust(divMeanOutlier), k=3)
+sub_grp_agnes <- cutree(as.hclust(agglWard), k=3)
+
+```
+
+## Final Clustering
+
+```{r clustering}
+
+#divisive
+fviz_cluster(list(data = cluster_ready_outlier, cluster = sub_grp_diana))
+
+#agglomerative
+fviz_cluster(list(data = cluster_ready_outlier, cluster = sub_grp_agnes))
+
+```
