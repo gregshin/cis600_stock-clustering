@@ -90,7 +90,9 @@ EnsurePackage("textshape")
 ```
 
 ```{r, echo = FALSE}
+
 child_docs <- c("child/1_DataPreprocessing.Rmd","child/2_EDA_StockSummary.Rmd","child/3_EDA_StockDividends.Rmd","child/4_EDA_StockEarnings.Rmd","child/5_EDA_StockPrices.Rmd", "child/6_KMeans_StockClustering")
+
 ```
 
 ```{r child = child_docs}
