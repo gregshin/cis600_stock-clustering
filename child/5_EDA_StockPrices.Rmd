@@ -14,6 +14,17 @@ dataSetReader_PricesFactor %>%gather("key","val",setdiff(names(.), "release_time
 
 
 ```{r}
+
+# Removing outliers 
+dataSetReader_Prices$high[dataSetReader_Prices$high %in% boxplot.stats(dataSetReader_Prices$high)$out] <- median(dataSetReader_Prices$high, na.rm = T)
+dataSetReader_Prices$low[dataSetReader_Prices$low %in% boxplot.stats(dataSetReader_Prices$low)$out] <- median(dataSetReader_Prices$low, na.rm = T)
+dataSetReader_Prices$close[dataSetReader_Prices$close %in% boxplot.stats(dataSetReader_Prices$close)$out] <- median(dataSetReader_Prices$close, na.rm = T)
+dataSetReader_Prices$open[dataSetReader_Prices$open %in% boxplot.stats(dataSetReader_Prices$open)$out] <- median(dataSetReader_Prices$open, na.rm = T)
+dataSetReader_Prices$close_adjusted[dataSetReader_Prices$close_adjusted %in% boxplot.stats(dataSetReader_Prices$close_adjusted)$out] <- median(dataSetReader_Prices$close_adjusted, na.rm = T)
+dataSetReader_Prices$split_coefficient[dataSetReader_Prices$split_coefficient %in% boxplot.stats(dataSetReader_Prices$split_coefficient)$out] <- median(dataSetReader_Prices$split_coefficient, na.rm = T)
+dataSetReader_Prices$volume[dataSetReader_Prices$volume %in% boxplot.stats(dataSetReader_Prices$volume)$out] <- median(dataSetReader_Prices$volume, na.rm = T)
+
+
 #Correlation between total_prices and total_earnings variables
 cor_matrix <- cor(dataSetReader_Prices[complete.cases(dataSetReader_Prices), sapply(dataSetReader_Prices, is.numeric)], method = "pearson")
 corrplot(cor_matrix, type = "upper")

@@ -1,6 +1,14 @@
 ## Stock Summary Data Exploration
 
 ```{r}
+
+# Removing outliers 
+dataSetReader_Summary$total_earnings[dataSetReader_Summary$total_earnings %in% boxplot.stats(dataSetReader_Summary$total_earnings)$out] <- median(dataSetReader_Summary$total_earnings, na.rm = T)
+
+# Removing outliers 
+dataSetReader_Summary$total_prices[dataSetReader_Summary$total_prices %in% boxplot.stats(dataSetReader_Summary$total_prices)$out] <- median(dataSetReader_Summary$total_prices, na.rm = T)
+
+
 #Correlation between total_prices and total_earnings variables
 cor_matrix <- cor(dataSetReader_Summary[complete.cases(dataSetReader_Summary), sapply(dataSetReader_Summary, is.numeric)], method = "pearson")
 corrplot(cor_matrix, type = "upper")

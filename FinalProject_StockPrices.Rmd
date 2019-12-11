@@ -1,8 +1,11 @@
 ---
 title: "CIS 600 Final Project - Digit Recognition"
-author: Gafei, Greg Shin, Ashraf Elnashar
-date: Nov. 11th, 2019
-output: html_document
+author: "Gafei, Greg Shin, Ashraf Elnashar"
+date: "Nov. 11th, 2019"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 theme: cerulean
 ---
 
@@ -92,7 +95,7 @@ EnsurePackage("textshape")
 ```
 
 ```{r, echo = FALSE}
-child_docs <- c("child/1_DataPreprocessing.Rmd","child/2_EDA_StockSummary.Rmd","child/3_EDA_StockDividends.Rmd","child/4_EDA_StockEarnings.Rmd","child/5_EDA_StockPrices.Rmd","child/6_KMeans_StockClustering","child/7_HierarchicalClustering.Rmd")
+child_docs <- c("child/1_DataPreprocessing.Rmd","child/2_EDA_StockSummary.Rmd","child/3_EDA_StockDividends.Rmd","child/4_EDA_StockEarnings.Rmd","child/5_EDA_StockPrices.Rmd","child/6_KMeans_StockClustering.Rmd","child/7_HierarchicalClustering.Rmd")
 ```
 
 ```{r child = child_docs}

@@ -1,6 +1,9 @@
 ## Stock Dividends Data Exploration
 
 ```{r}
+# Removing outliers 
+dataSetReader_Dividends$dividend[dataSetReader_Dividends$dividend %in% boxplot.stats(dataSetReader_Dividends$dividend)$out] <- median(dataSetReader_Dividends$dividend, na.rm = T)
+
 ggplot(dataSetReader_Dividends, aes(x = symbol, y = dividend)) +
   geom_boxplot() +
   theme(panel.grid.major.x = element_blank())

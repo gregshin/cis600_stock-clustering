@@ -63,15 +63,20 @@ xtabs(~symbol+release_time,dataSetReader_Earnings)
 dataSetReader_Earnings$eps <- as.numeric(as.character(dataSetReader_Earnings$eps))
 dataSetReader_Earnings$eps_est <- as.numeric(as.character(dataSetReader_Earnings$eps_est))
 
+# Removing outliers 
+dataSetReader_Earnings$eps[dataSetReader_Earnings$eps %in% boxplot.stats(dataSetReader_Earnings$eps)$out] <- median(dataSetReader_Earnings$eps, na.rm = T)
+
+dataSetReader_Earnings$eps_est[dataSetReader_Earnings$eps_est %in% boxplot.stats(dataSetReader_Earnings$eps_est)$out] <- median(dataSetReader_Earnings$eps_est, na.rm = T)
+
 ```
 
 ```{r}
-# a graphical way of representing the relationship between total_prices and total_earnings field.
+# a graphical way of representing the relationship between eps and eps_est field.
 theme_set(theme_bw())
 
-# ggplot(dataSetReader_Summary, aes(x = total_earnings, y = total_prices, group = 2)) +
-#   geom_boxplot() +
-#   theme(panel.grid.major.x = element_blank())
+ggplot(dataSetReader_Earnings, aes(x = eps, y = eps_est, group = 2)) +
+  geom_boxplot() +
+  theme(panel.grid.major.x = element_blank())
 
 dataSetReader_Earnings %>%
   keep(is.numeric) %>% 
