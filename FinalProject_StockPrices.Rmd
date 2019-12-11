@@ -1,6 +1,6 @@
 ---
-title: "CIS 600 Final Project - Digit Recognition"
-author: "Gafei, Greg Shin, Ashraf Elnashar"
+title: "Stock Analysis Using Data Clustering"
+author: "Gafei Gregory, Greg Shin, Ashraf Elnashar"
 date: "Nov. 11th, 2019"
 output:
   word_document: default
