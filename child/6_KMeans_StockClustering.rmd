@@ -191,10 +191,10 @@ kmeansannualreturns <-kmeans(annual_returns_scaled, centers = 5, iter.max = 1000
 # shows an aggregate of stock based on annual returns, 
 fviz_cluster(kmeansannualreturns, data = reshapeStockssymbolrowNONA)
 ```
+-->
 
 
-
-
+<!---
 # elbow curve to determine k number?
 
 #annualReturn <- 
